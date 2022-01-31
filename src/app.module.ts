@@ -7,6 +7,7 @@ import { importProviders as pipesImportsProvider } from './pipes/import.provider
 import { UserModule } from './module/user/user.module';
 import { SequelizeModule } from './sequelize/sequelize.module';
 import sequelizeConfig from './sequelize/sequelize.config';
+import { TreeModule } from './module/tree/tree.module';
 @Module({
   imports: [
     SequelizeModule,
@@ -15,6 +16,7 @@ import sequelizeConfig from './sequelize/sequelize.config';
       envFilePath: ['.env'],
     }),
     UserModule,
+    TreeModule
   ],
   controllers: [AppController],
   providers: [AppService, ...pipesImportsProvider],

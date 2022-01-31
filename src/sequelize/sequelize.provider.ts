@@ -1,9 +1,7 @@
 import { Sequelize } from "sequelize-typescript";
 import { SequelizeService } from "./sequelize.service";
 import * as userModels from '../module/user/models';
-import sequelizeConfig from "./sequelize.config";
-import { Logger } from "@nestjs/common";
-
+import * as treeModels from "../module/tree/models"
 export const SequelizeProvider = [
     {
         provide: 'SEQUELIZE',
@@ -13,6 +11,9 @@ export const SequelizeProvider = [
             const allModels = [];
             for (const value in userModels){
                 allModels.push(userModels[value]);
+            }
+            for(const value in treeModels){
+                allModels.push(treeModels[value]);
             }
             sequelize.addModels([...allModels]);
             if(process.env.ENV === 'e2e'){
