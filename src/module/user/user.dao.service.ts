@@ -6,18 +6,18 @@ import {
   Logger,
   NotFoundException,
   ParseIntPipe,
-} from '@nestjs/common';
-import { users } from './models/users.entity';
-import * as util from '../../constant';
-import * as VError from 'verror';
-import { UpdateUserRequestDto } from './dto/updateUser.request.dto';
-import { Op } from 'sequelize/dist';
+} from "@nestjs/common";
+import { users } from "./models/users.entity";
+import * as util from "../../constant";
+import * as VError from "verror";
+import { UpdateUserRequestDto } from "./dto/updateUser.request.dto";
+import { Op } from "sequelize/dist";
 @Injectable()
 export class UserDaoService {
   constructor(
-    @Inject('SEQUELIZE') private readonly sequelize,
+    @Inject("SEQUELIZE") private readonly sequelize,
     @Inject(util.USER_REPOSITORY)
-    private readonly userRepository: typeof users,
+    private readonly userRepository: typeof users
   ) {}
 
   async addUser(payload: any) {
@@ -32,12 +32,12 @@ export class UserDaoService {
     try {
       const query = {
         attributes: [
-          'id',
-          'username',
-          'email',
-          'mobile',
-          'image_url',
-          'last_login',
+          "id",
+          "username",
+          "email",
+          "mobile",
+          "image_url",
+          "last_login",
         ],
         where: {
           id: id,
@@ -46,16 +46,16 @@ export class UserDaoService {
       };
       let result = await this.userRepository.findOne(query);
       if (!result) {
-        throw new ImATeapotException('No data Found');
+        throw new ImATeapotException("No data Found");
       }
       return result;
     } catch (err) {
       throw new VError(
         {
-          name: 'GET USER DAO ERROR',
+          name: "GET USER DAO ERROR",
           cause: err,
         },
-        'GET USER DAO ERROR',
+        "GET USER DAO ERROR"
       );
     }
   }
@@ -63,23 +63,23 @@ export class UserDaoService {
   async getAllUsers() {
     try {
       const query = {
-        attributes: ['id', 'username', 'email', 'mobile', 'image_url'],
+        attributes: ["id", "username", "email", "mobile", "image_url"],
         where: {
           deleted_at: null,
         },
       };
       let result = await this.userRepository.findAll(query);
       if (!result) {
-        throw new ImATeapotException('No data Found');
+        throw new ImATeapotException("No data Found");
       }
       return result;
     } catch (err) {
       throw new VError(
         {
-          name: 'GET USER DAO ERROR',
+          name: "GET USER DAO ERROR",
           cause: err,
         },
-        'GET USER DAO ERROR',
+        "GET USER DAO ERROR"
       );
     }
   }
@@ -89,12 +89,11 @@ export class UserDaoService {
       const query: any = {
         where: {
           id: id,
-          updated_at: new Date(),
         },
       };
       return this.userRepository.update(payload, query);
     } catch (err) {
-      throw new Error('Internal Server Error');
+      throw new Error("Internal Server Error");
     }
   }
 
@@ -111,7 +110,7 @@ export class UserDaoService {
       return this.userRepository.update(data, query);
     } catch (err) {
       Logger.log(err);
-      throw new InternalServerErrorException('Internal Server Error');
+      throw new InternalServerErrorException("Internal Server Error");
     }
   }
 }

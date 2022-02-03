@@ -15,6 +15,11 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER,
               },
+              uuid: {
+                allowNull: true,
+                unique: true,
+                type: Sequelize.TEXT,
+              },
               username: {
                 allowNull: false,
                 type: Sequelize.TEXT,

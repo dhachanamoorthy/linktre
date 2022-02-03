@@ -6,10 +6,10 @@ import {
   Model,
   PrimaryKey,
   Table,
-} from 'sequelize-typescript';
+} from "sequelize-typescript";
 
 @Table({
-  tableName: 'users',
+  tableName: "users",
 })
 export class users extends Model<users> {
   @PrimaryKey
@@ -19,6 +19,12 @@ export class users extends Model<users> {
     type: DataType.BIGINT,
   })
   id: number;
+
+  // @AllowNull(false)
+  @Column({
+    type: DataType.TEXT,
+  })
+  uuid: string;
 
   @AllowNull(true)
   @Column({
@@ -79,7 +85,6 @@ export class users extends Model<users> {
     type: DataType.DATE,
   })
   last_login: Date;
-  
 
   @AllowNull(false)
   @Column({

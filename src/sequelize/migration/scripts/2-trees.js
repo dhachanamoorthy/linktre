@@ -7,7 +7,7 @@ module.exports = {
         { autocommit: false },
         async (transaction) => {
           await queryInterface.createTable(
-            "tree",
+            "trees",
             {
               id: {
                 allowNull: false,
@@ -15,17 +15,25 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER,
               },
-              user_id:{
-                allowNull:false,
-                type:Sequelize.INTEGER,
-                references : {
-                  model:'users',
-                  key:'id'
-                }
+              user_id: {
+                allowNull: false,
+                type: Sequelize.INTEGER,
+                references: {
+                  model: "users",
+                  key: "id",
+                },
               },
-              tree_name:{
-                allowNull:true,
-                type:Sequelize.TEXT,
+              tree_name: {
+                allowNull: true,
+                type: Sequelize.TEXT,
+              },
+              description: {
+                allowNull: true,
+                type: Sequelize.TEXT,
+              },
+              tree_bg: {
+                allowNull: true,
+                type: Sequelize.TEXT,
               },
               created_at: {
                 allowNull: false,
