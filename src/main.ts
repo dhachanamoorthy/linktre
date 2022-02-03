@@ -5,8 +5,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
   const config = new DocumentBuilder()
-    .setTitle('Nestjs Template')
-    .setDescription('Nestjs Template')
+    .setTitle('Linktre')
+    .setDescription('API Documentation')
     .setVersion('1.0')
     .build();
 
