@@ -7,7 +7,7 @@ module.exports = {
         { autocommit: false },
         async (transaction) => {
           await queryInterface.createTable(
-            "tree",
+            "links",
             {
               id: {
                 allowNull: false,
@@ -15,17 +15,30 @@ module.exports = {
                 primaryKey: true,
                 type: Sequelize.INTEGER,
               },
-              user_id:{
-                allowNull:false,
-                type:Sequelize.INTEGER,
-                references : {
-                  model:'users',
-                  key:'id'
-                }
+              tree_id: {
+                allowNull: false,
+                type: Sequelize.INTEGER,
+                references: {
+                  model: "trees",
+                  key: "id",
+                },
               },
-              tree_name:{
-                allowNull:true,
-                type:Sequelize.TEXT,
+              link_name: {
+                allowNull: true,
+                type: Sequelize.TEXT,
+              },
+              link_url: {
+                allowNull: false,
+                type: Sequelize.TEXT,
+              },
+              description: {
+                allowNull: true,
+                type: Sequelize.TEXT,
+              },
+              disabled: {
+                allowNull: false,
+                type: Sequelize.BOOLEAN,
+                defaultValue: false,
               },
               created_at: {
                 allowNull: false,
@@ -46,7 +59,7 @@ module.exports = {
         }
       );
     } catch (e) {
-      throw new Error("19700101000000000-tree migration failed!");
+      throw new Error("19700101000000000-links migration failed!");
     }
   },
   down: async (queryInterface) => {
@@ -54,11 +67,11 @@ module.exports = {
       return queryInterface.sequelize.transaction(
         { autocommit: false },
         async (transaction) => {
-          await queryInterface.dropTable("tree", { transaction });
+          await queryInterface.dropTable("links", { transaction });
         }
       );
     } catch (e) {
-      throw new Error("19700101000000000-tree migration failed!");
+      throw new Error("19700101000000000-links migration failed!");
     }
   },
 };
