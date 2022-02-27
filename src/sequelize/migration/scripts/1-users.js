@@ -21,7 +21,7 @@ module.exports = {
                 type: Sequelize.TEXT,
               },
               username: {
-                allowNull: false,
+                allowNull: true,
                 type: Sequelize.TEXT,
               },
               mobile: {
