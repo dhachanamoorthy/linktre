@@ -1,6 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty,IsOptional} from 'class-validator';
 export class CreateUserRequestDto {
+
+  @ApiProperty({ type: String, example: '"104458550302674807878"' })
+  @IsOptional()
+  uuid: string;
+
   @ApiProperty({ type: String, example: 'Moorthy' })
   username: string;
 
@@ -15,5 +20,9 @@ export class CreateUserRequestDto {
   @ApiProperty({ type: String, example: 'Moorthy@123' })
   @IsOptional()
   password: string;
+
+  @ApiProperty({type:String,example:'www.google.com'})
+  @IsOptional()
+  image_url:string
 }
 

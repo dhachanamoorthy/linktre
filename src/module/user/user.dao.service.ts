@@ -22,7 +22,7 @@ export class UserDaoService {
 
   async addUser(payload: any) {
     try {
-      return await this.userRepository.create(payload);
+      return await this.userRepository.findOrCreate(payload);
     } catch (err) {
       throw err;
     }
