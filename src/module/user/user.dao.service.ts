@@ -22,7 +22,17 @@ export class UserDaoService {
 
   async addUser(payload: any) {
     try {
-      return await this.userRepository.create(payload);
+      let result=  await this.userRepository.findOrCreate({
+        where:{
+          username : payload?.username,
+          uuid:payload?.uuid,
+          email:payload?.email,
+          mobile:payload?.mobile,
+          image_url:payload?.image_url,
+          created_by:payload.created_by
+        }
+      });
+      return result;
     } catch (err) {
       throw err;
     }
