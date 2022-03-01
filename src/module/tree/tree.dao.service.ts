@@ -50,6 +50,7 @@ export class TreeDaoService {
 			let result = await this.treeRepository.findAndCountAll({
 				where: {
 					user_id: user_id,
+					deleted_at:null
 				},
 			});
 			return result;
