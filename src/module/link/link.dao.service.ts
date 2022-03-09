@@ -43,6 +43,7 @@ export class LinkDaoService {
       let result = this.linkRepository.findAll({
         where: {
           tree_id: tree_id,
+          deleted_at:null
         },
       });
       return result;
