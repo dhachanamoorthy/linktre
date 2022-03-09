@@ -20,7 +20,4 @@ export class LinkService {
   async updateLink(id: number, payload: any) {
     return this.linkDaoService.updateLink(id, payload);
   }
- async deleteLink(id:number) {
-   return this.linkDaoService.deleteLink(id);
- }
 }
