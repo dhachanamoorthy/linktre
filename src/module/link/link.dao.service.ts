@@ -64,4 +64,22 @@ export class LinkDaoService {
       throw new InternalServerErrorException(util.INTERNAL_ERR);
     }
   }
+
+  async deleteLink(id: number) {
+    try {
+      let result = this.linkRepository.update(
+        {
+          deleted_at: new Date(),
+        },
+        {
+          where: {
+            id: id,
+          },
+        }
+      );
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
 }

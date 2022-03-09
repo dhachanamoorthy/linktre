@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   InternalServerErrorException,
   Logger,
@@ -63,6 +64,17 @@ export class LinkController {
     } catch (err) {
       Logger.error(err);
       throw new InternalServerErrorException(util.INTERNAL_ERR, err);
+    }
+  }
+
+  @Delete("/:id")
+  async deleteLink(@Param("id") link_id:number){
+    try{
+      let result = this.linkService.deleteLink(link_id);
+      return result;
+    }
+    catch(err){
+      throw err;
     }
   }
 }
