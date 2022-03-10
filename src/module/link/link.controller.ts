@@ -8,12 +8,15 @@ import {
   Param,
   Patch,
   Post,
+  Res,
 } from "@nestjs/common";
 import { CreateLinkRequestDto } from "./dto/createLink.request.dto";
 import { LinkService } from "./link.service";
 import * as util from "src/constant";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { UpdateLinkRequestDto } from "./dto/updateLink.request.dto";
+import { SuccessPipe } from "src/pipes/responsePipe";
+import { MSG, CODE } from "./constants";
 
 @ApiTags("Link")
 @Controller("link")
@@ -23,30 +26,52 @@ export class LinkController {
   @ApiOperation({
     description: "Api to create link",
   })
-  async createLink(@Body() payload: CreateLinkRequestDto) {
+  async createLink(@Res() res, @Body() payload: CreateLinkRequestDto) {
     try {
       let result = this.linkService.createLink(payload);
-      return result;
+
+      return new SuccessPipe().Created(
+        res,
+        CODE.LINK_CREATE_SUCCESS,
+        MSG.LINK_CREATE_SUCCESS,
+        result
+      );
     } catch (err) {
       Logger.error(err);
       throw new InternalServerErrorException(util.INTERNAL_ERR, err);
     }
   }
   @Get("/:id")
-  async getLink(@Param("id") id: number) {
+  async getLink(@Res() res, @Param("id") id: number) {
     try {
-      let result = this.linkService.getLink(id);
-      return result;
+      let result = await this.linkService.getLink(id);
+      return new SuccessPipe().Ok(
+        res,
+        CODE.LINK_FETCH_SUCCESS,
+        MSG.LINK_FETCH_SUCCESS,
+        result
+      );
     } catch (err) {
       Logger.error(err);
       throw new InternalServerErrorException(util.INTERNAL_ERR, err);
     }
   }
   @Get("/all/:tree_id")
-  async getAllLink(@Param("tree_id") tree_id: number) {
+  async getAllLink(@Res() res, @Param("tree_id") tree_id: number) {
     try {
-      let result = this.linkService.getAllLinks(tree_id);
-      return result;
+      let result = await this.linkService.getAllLinks(tree_id);
+      if (result) {
+        return new SuccessPipe().Ok(
+          res,
+          CODE.LINK_FETCH_SUCCESS,
+          MSG.LINK_FETCH_SUCCESS,
+          result
+        );
+      } else {
+        return new SuccessPipe().NoContent(
+          res
+        );
+      }
     } catch (err) {
       Logger.error(err);
       throw new InternalServerErrorException(util.INTERNAL_ERR, err);
@@ -55,12 +80,18 @@ export class LinkController {
 
   @Patch("/:id")
   async updateLink(
+    @Res() res,
     @Param("id") id: number,
     @Body() payload: UpdateLinkRequestDto
   ) {
     try {
-      let result = this.linkService.updateLink(id, payload);
-      return result;
+      let result = await this.linkService.updateLink(id, payload);
+      return new SuccessPipe().Ok(
+        res,
+        CODE.LINK_UPDATE_SUCCESS,
+        MSG.LINK_UPDATE_SUCCESS,
+        result
+      );
     } catch (err) {
       Logger.error(err);
       throw new InternalServerErrorException(util.INTERNAL_ERR, err);
@@ -68,12 +99,16 @@ export class LinkController {
   }
 
   @Delete("/:id")
-  async deleteLink(@Param("id") link_id:number){
-    try{
-      let result = this.linkService.deleteLink(link_id);
-      return result;
-    }
-    catch(err){
+  async deleteLink(@Res() res, @Param("id") link_id: number) {
+    try {
+      let result = await this.linkService.deleteLink(link_id);
+      return new SuccessPipe().Ok(
+        res,
+        CODE.LINK_DELETE_SUCCESS,
+        MSG.LINK_DELETE_SUCCESS,
+        result
+      );
+    } catch (err) {
       throw err;
     }
   }

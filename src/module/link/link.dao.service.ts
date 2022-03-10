@@ -26,7 +26,7 @@ export class LinkDaoService {
   }
   async getLink(id: number) {
     try {
-      let result = this.linkRepository.findOne({
+      let result =await this.linkRepository.findOne({
         where: {
           id: id,
         },
@@ -40,7 +40,7 @@ export class LinkDaoService {
   async getAllLinks(tree_id: number) {
     try {
       Logger.log("Enter", "getAllLinks");
-      let result = this.linkRepository.findAll({
+      let result =await this.linkRepository.findAll({
         where: {
           tree_id: tree_id,
           deleted_at:null
@@ -54,7 +54,8 @@ export class LinkDaoService {
   }
   async updateLink(id: number, payload: any) {
     try {
-      let result = this.linkRepository.update(payload, {
+      console.log(payload);
+      let result =await this.linkRepository.update(payload, {
         where: {
           id: id,
         },
@@ -68,7 +69,7 @@ export class LinkDaoService {
 
   async deleteLink(id: number) {
     try {
-      let result = this.linkRepository.update(
+      let result =await this.linkRepository.update(
         {
           deleted_at: new Date(),
         },
