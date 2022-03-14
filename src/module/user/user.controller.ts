@@ -10,6 +10,7 @@ import {
 	ParseIntPipe,
 	Patch,
 	Post,
+	Res,
 	UseGuards,
 } from "@nestjs/common";
 import {
@@ -18,7 +19,9 @@ import {
 	ApiOperation,
 	ApiParam,
 } from "@nestjs/swagger";
+import { SuccessPipe } from "src/pipes/responsePipe";
 import { AuthGuard } from "../guard/auth.guard";
+import { CODE, MSG } from "./contants";
 import { CreateUserRequestDto } from "./dto/createUser.request.dto";
 import { UpdateUserRequestDto } from "./dto/updateUser.request.dto";
 import { UserService } from "./user.service";
@@ -35,10 +38,15 @@ export class UserController {
 	@ApiCreatedResponse({
 		description: "Registered User Successfully",
 	})
-	async createUser(@Body() body: CreateUserRequestDto): Promise<any> {
+	async createUser(@Res() res,@Body() body: CreateUserRequestDto): Promise<any> {
 		try {
 			let result = await this.userService.addUser(body);
-			return result;
+			return new SuccessPipe().Created(
+				res,
+				CODE.USER_CREATE_SUCCESS,
+				MSG.USER_CREATE_SUCCESS,
+				result
+			  );
 		} catch (err) {
 			Logger.error(err);
 			throw new InternalServerErrorException("User Registration Failed");
@@ -53,10 +61,15 @@ export class UserController {
 	@ApiCreatedResponse({
 		description: "Fetched Users Successfully",
 	})
-	async getUser(@Param("id", ParseIntPipe) id: number) {
+	async getUser(@Res() res,@Param("id", ParseIntPipe) id: number) {
 		try {
 			let result = await this.userService.getUser(id);
-			return result;
+			return new SuccessPipe().Ok(
+				res,
+				CODE.USER_FETCH_SUCCESS,
+				MSG.USER_FETCH_SUCCESS,
+				result
+			  );
 		} catch (err) {
 			Logger.error(err);
 			throw new InternalServerErrorException();
@@ -73,10 +86,15 @@ export class UserController {
 	})
 	@ApiBearerAuth("JWT-auth")
 	@UseGuards(AuthGuard)
-	async getAllUsers() {
+	async getAllUsers(@Res() res) {
 		try {
 			let result = await this.userService.getAllUsers();
-			return result;
+			return new SuccessPipe().Ok(
+				res,
+				CODE.USER_FETCH_SUCCESS,
+				MSG.USER_FETCH_SUCCESS,
+				result
+			  );
 		} catch (err) {
 			Logger.error(err);
 			throw new InternalServerErrorException();
@@ -92,11 +110,18 @@ export class UserController {
 		description: "User Updated Successfully",
 	})
 	async updateUser(
+		@Res() res,
 		@Param("id", ParseIntPipe) id: number,
 		@Body() payload: UpdateUserRequestDto
 	) {
 		try {
-			return this.userService.updateUser(id, payload);
+			let result = this.userService.updateUser(id, payload);
+			return new SuccessPipe().Ok(
+				res,
+				CODE.USER_UPDATED_SUCCESS,
+				MSG.USER_UPDATED_SUCCESS,
+				result
+			  );
 		} catch (err) {
 			throw new InternalServerErrorException("Internal Server Error");
 		}
@@ -110,9 +135,15 @@ export class UserController {
 	@ApiCreatedResponse({
 		description: "User Updated Successfully",
 	})
-	async deleteUser(@Param("id", ParseIntPipe) id: number) {
+	async deleteUser(@Res() res,@Param("id", ParseIntPipe) id: number) {
 		try {
-			return this.userService.deleteUser(id);
+			let result = this.userService.deleteUser(id);
+			return new SuccessPipe().Ok(
+				res,
+				CODE.USER_DELETE_SUCCESS,
+				MSG.USER_DELETE_SUCCESS,
+				result
+			  );
 		} catch (err) {
 			throw new InternalServerErrorException("Internal Server Error");
 		}
