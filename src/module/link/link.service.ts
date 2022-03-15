@@ -6,22 +6,27 @@ export class LinkService {
   constructor(private readonly linkDaoService: LinkDaoService) {}
   async createLink(payload: any) {
     Logger.log("Enter link service");
-    return this.linkDaoService.createLink(payload);
+    let result = await this.linkDaoService.createLink(payload);
+    return result;
   }
 
   async getLink(id: number) {
-    return this.linkDaoService.getLink(id);
+    let result = await this.linkDaoService.getLink(id);
+    return result;
   }
 
   async getAllLinks(tree_id: number) {
-    return this.linkDaoService.getAllLinks(tree_id);
+    let result = await this.linkDaoService.getAllLinks(tree_id);
+    return result;
   }
 
   async updateLink(id: number, payload: any) {
-    return this.linkDaoService.updateLink(id, payload);
+    let result = await this.linkDaoService.updateLink(id, payload);
+    return result;
   }
-  
-  async deleteLink(id:number) {
-    return this.linkDaoService.deleteLink(id);
+
+  async deleteLink(id: number) {
+    let result = await this.linkDaoService.deleteLink(id);
+    return result;
   }
 }
