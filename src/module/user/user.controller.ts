@@ -38,6 +38,7 @@ export class UserController {
   @ApiCreatedResponse({
     description: "Registered User Successfully",
   })
+  @ApiBearerAuth("JWT-auth")
   async createUser(
     @Res() res,
     @Body() body: CreateUserRequestDto
