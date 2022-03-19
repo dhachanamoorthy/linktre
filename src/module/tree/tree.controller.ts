@@ -1,16 +1,21 @@
 import {
-	Body,
-	Controller,
-	Delete,
-	Get,
-	HttpCode,
-	Logger,
-	Param,
-	ParseIntPipe,
-	Patch,
-	Post,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Logger,
+  Optional,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+  Res,
 } from "@nestjs/common";
 import { ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { SuccessPipe } from "src/pipes/responsePipe";
+import { CODE, MSG } from "./contants";
 import { CreateTreeRequestDto } from "./dto/CreateTreeRequest.dto";
 import { UpdateTreeRequestDto } from "./dto/UpdateTreeRequest.dto";
 import { TreeService } from "./tree.service";
@@ -18,80 +23,95 @@ import { TreeService } from "./tree.service";
 @ApiTags("Tree")
 @Controller("tree")
 export class TreeController {
-	constructor(private readonly treeService: TreeService) {}
+  constructor(private readonly treeService: TreeService) {}
 
-	@Post()
-	@HttpCode(200)
-	@ApiOperation({
-		description: "Api to create tree",
-	})
-	async createTree(@Body() payload: CreateTreeRequestDto) {
-		try {
-			let result = await this.treeService.createTree(payload);
-			return result;
-		} catch (err) {
-			Logger.log(err);
-			throw new Error("Internal Server Error");
-		}
-	}
+  @Post()
+  @HttpCode(200)
+  @ApiOperation({
+    description: "Api to create tree",
+  })
+  async createTree(@Body() payload: CreateTreeRequestDto) {
+    try {
+      let result = await this.treeService.createTree(payload);
+      return result;
+    } catch (err) {
+      Logger.log(err);
+      throw err;
+    }
+  }
 
-	@Patch("/:id")
-	@HttpCode(200)
-	@ApiOperation({
-		description: "Api to update tree",
-	})
-	async updateTree(
-		@Param("id", ParseIntPipe) id: number,
-		@Body() payload: UpdateTreeRequestDto
-	) {
-		try {
-			let result = await this.treeService.updateTree(id, payload);
-			return result;
-		} catch (err) {
-			throw new Error("Internal Server Error");
-		}
-	}
+  @Patch("/:id")
+  @HttpCode(200)
+  @ApiOperation({
+    description: "Api to update tree",
+  })
+  async updateTree(
+    @Param("id", ParseIntPipe) id: number,
+    @Body() payload: UpdateTreeRequestDto
+  ) {
+    try {
+      let result = await this.treeService.updateTree(id, payload);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
 
-	@Get("all/:user_id")
-	@HttpCode(200)
-	@ApiOperation({
-		description: "Api to get all trees",
-	})
-	async getAllTree(@Param("user_id") user_id: number) {
-		try {
-			let result = await this.treeService.getAllTree(user_id);
-			return result;
-		} catch (err) {
-			Logger.error(err);
-			throw err;
-		}
-	}
+  @Get("all/:user_id")
+  @HttpCode(200)
+  @ApiOperation({
+    description: "Api to get all trees",
+  })
+  async getAllTree(@Param("user_id") user_id: number) {
+    try {
+      let result = await this.treeService.getAllTree(user_id);
+      return result;
+    } catch (err) {
+      Logger.error(err);
+      throw err;
+    }
+  }
 
-	@Get("/:id")
-	@HttpCode(200)
-	@ApiOperation({
-		description: "Api to get tree",
-	})
-	async getTree(@Param("id", ParseIntPipe) id: number) {
-		try {
-			let result = await this.treeService.getTree(id);
-			return result;
-		} catch (err) {
-			throw new Error("Internal Server Error");
-		}
-	}
+  @Get("/")
+  @HttpCode(200)
+  @ApiOperation({
+    description: "Api to get tree",
+  })
+  async getTree(
+    @Res() res,
+    @Query("id") id: number,
+    @Query("tree_name") treeName: string
+  ) {
+    try {
+      Logger.log("Enter getTree controller");
+      let result;
+      if (!treeName) {
+        result = await this.treeService.getTree(id);
+      } else {
+        result = await this.treeService.getTreeByName(treeName);
+      }
+      return new SuccessPipe().Ok(
+              res,
+              CODE.TREE_FETCH_SUCCESS,
+              MSG.TREE_FETCH_SUCCESS,
+              result
+            );
+    } catch (err) {
+      throw err;
+    }
+  }
 
-	@Delete("/:id")
-	@HttpCode(200)
-	@ApiOperation({
-		description: "Api to delete tree",
-	})
-	async deleteTree(@Param("id", ParseIntPipe) id: number) {
-		try {
-			let result = await this.treeService.deleteTree(id);
-			return result;
-		} catch (err) {
-			throw new Error("Internal Server Error");
-		}
-	}
+  @Delete("/:id")
+  @HttpCode(200)
+  @ApiOperation({
+    description: "Api to delete tree",
+  })
+  async deleteTree(@Param("id", ParseIntPipe) id: number) {
+    try {
+      let result = await this.treeService.deleteTree(id);
+      return result;
+    } catch (err) {
+      throw err;
+    }
+  }
 }

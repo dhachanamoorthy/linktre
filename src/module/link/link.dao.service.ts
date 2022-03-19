@@ -3,7 +3,9 @@ import {
   Injectable,
   InternalServerErrorException,
   Logger,
+  NotFoundException,
 } from "@nestjs/common";
+import { NotFoundError } from "rxjs";
 import * as util from "src/constant";
 import { links } from "./models";
 
@@ -26,11 +28,14 @@ export class LinkDaoService {
   }
   async getLink(id: number) {
     try {
-      let result =await this.linkRepository.findOne({
+      let result = await this.linkRepository.findOne({
         where: {
           id: id,
         },
       });
+      if (!result) {
+        throw new NotFoundException(util.NO_DATA);
+      }
       return result;
     } catch (err) {
       Logger.log(err);
@@ -40,12 +45,15 @@ export class LinkDaoService {
   async getAllLinks(tree_id: number) {
     try {
       Logger.log("Enter", "getAllLinks");
-      let result =await this.linkRepository.findAll({
+      let result = await this.linkRepository.findAll({
         where: {
           tree_id: tree_id,
-          deleted_at:null
+          deleted_at: null,
         },
       });
+      if (!result) {
+        throw new NotFoundException(util.NO_DATA);
+      }
       return result;
     } catch (err) {
       Logger.error(err);
@@ -55,7 +63,7 @@ export class LinkDaoService {
   async updateLink(id: number, payload: any) {
     try {
       console.log(payload);
-      let result =await this.linkRepository.update(payload, {
+      let result = await this.linkRepository.update(payload, {
         where: {
           id: id,
         },
@@ -69,7 +77,7 @@ export class LinkDaoService {
 
   async deleteLink(id: number) {
     try {
-      let result =await this.linkRepository.update(
+      let result = await this.linkRepository.update(
         {
           deleted_at: new Date(),
         },
@@ -81,7 +89,7 @@ export class LinkDaoService {
       );
       return result;
     } catch (err) {
-      throw err;
+      throw new InternalServerErrorException(util.INTERNAL_ERR);
     }
   }
 }

@@ -38,7 +38,7 @@ export class LinkController {
       );
     } catch (err) {
       Logger.error(err);
-      throw new InternalServerErrorException(util.INTERNAL_ERR, err);
+      throw err;
     }
   }
   @Get("/:id")
@@ -53,7 +53,7 @@ export class LinkController {
       );
     } catch (err) {
       Logger.error(err);
-      throw new InternalServerErrorException(util.INTERNAL_ERR, err);
+      throw err;
     }
   }
   @Get("/all/:tree_id")
@@ -68,13 +68,11 @@ export class LinkController {
           result
         );
       } else {
-        return new SuccessPipe().NoContent(
-          res
-        );
+        return new SuccessPipe().NoContent(res);
       }
     } catch (err) {
       Logger.error(err);
-      throw new InternalServerErrorException(util.INTERNAL_ERR, err);
+      throw err;
     }
   }
 
@@ -94,7 +92,7 @@ export class LinkController {
       );
     } catch (err) {
       Logger.error(err);
-      throw new InternalServerErrorException(util.INTERNAL_ERR, err);
+      throw err;
     }
   }
 

@@ -36,7 +36,7 @@ export class UserDaoService {
       }
       return result;
     } catch (err) {
-      throw err;
+      throw new InternalServerErrorException("Internal Server Error");
     }
   }
 
@@ -58,17 +58,11 @@ export class UserDaoService {
       };
       let result = await this.userRepository.findOne(query);
       if (!result) {
-        throw new ImATeapotException("No data Found");
+        throw new NotFoundException("No data Found");
       }
       return result;
     } catch (err) {
-      throw new VError(
-        {
-          name: "GET USER DAO ERROR",
-          cause: err,
-        },
-        "GET USER DAO ERROR"
-      );
+       throw new InternalServerErrorException("Internal Server Error");
     }
   }
 
@@ -82,7 +76,7 @@ export class UserDaoService {
       };
       let result = await this.userRepository.findAll(query);
       if (!result) {
-        throw new ImATeapotException("No data Found");
+        throw new NotFoundException("No data Found");
       }
       return result;
     } catch (err) {
@@ -103,7 +97,8 @@ export class UserDaoService {
           id: id,
         },
       };
-      return this.userRepository.update(payload, query);
+      let result = await this.userRepository.update(payload, query);
+      return result;
     } catch (err) {
       throw new Error("Internal Server Error");
     }
@@ -119,7 +114,8 @@ export class UserDaoService {
           id: id,
         },
       };
-      return this.userRepository.update(data, query);
+      let result = this.userRepository.update(data, query);
+      return result;
     } catch (err) {
       Logger.log(err);
       throw new InternalServerErrorException("Internal Server Error");
