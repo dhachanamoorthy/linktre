@@ -7,7 +7,7 @@ import {
 } from "@nestjs/common";
 import * as util from "../../constant";
 import { trees } from "./models/tree.entity";
-
+const Sequelize = require("sequelize");
 @Injectable()
 export class TreeDaoService {
   constructor(
@@ -95,6 +95,29 @@ export class TreeDaoService {
     } catch (err) {
       Logger.log(err);
       throw new InternalServerErrorException(util.INTERNAL_ERR);
+    }
+  }
+
+  async getTreeByName(treeName: any) {
+    try {
+      // let result = await this.treeRepository.findOne({
+      //   attributes: ["tree_name"],
+      //   where: {
+      //     tree_name: this.sequelize.fn('LOWER',this.sequelize.col("tree_name"),)
+      //   },
+      // });
+      let result = await this.sequelize.query(
+        `select id,tree_name from trees where lower(tree_name) = '${treeName}'`,
+        {
+          type: "SELECT",
+        }
+      );
+      if (!result) {
+        throw new NotFoundException(util.NO_DATA);
+      }
+      return result;
+    } catch (err) {
+      throw new InternalServerErrorException(err);
     }
   }
 }

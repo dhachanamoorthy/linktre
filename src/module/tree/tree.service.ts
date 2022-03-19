@@ -27,4 +27,10 @@ export class TreeService {
     let result = await this.treeDaoService.deleteTree(id);
     return result;
   }
+
+  async getTreeByName(treeName:String){
+    treeName = treeName.toLowerCase();
+    let result = await this.treeDaoService.getTreeByName(treeName);
+    return result;
+  } 
 }

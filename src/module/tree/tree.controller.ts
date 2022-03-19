@@ -5,12 +5,17 @@ import {
   Get,
   HttpCode,
   Logger,
+  Optional,
   Param,
   ParseIntPipe,
   Patch,
   Post,
+  Query,
+  Res,
 } from "@nestjs/common";
 import { ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { SuccessPipe } from "src/pipes/responsePipe";
+import { CODE, MSG } from "./contants";
 import { CreateTreeRequestDto } from "./dto/CreateTreeRequest.dto";
 import { UpdateTreeRequestDto } from "./dto/UpdateTreeRequest.dto";
 import { TreeService } from "./tree.service";
@@ -67,15 +72,30 @@ export class TreeController {
     }
   }
 
-  @Get("/:id")
+  @Get("/")
   @HttpCode(200)
   @ApiOperation({
     description: "Api to get tree",
   })
-  async getTree(@Param("id", ParseIntPipe) id: number) {
+  async getTree(
+    @Res() res,
+    @Query("id") id: number,
+    @Query("tree_name") treeName: string
+  ) {
     try {
-      let result = await this.treeService.getTree(id);
-      return result;
+      Logger.log("Enter getTree controller");
+      let result;
+      if (!treeName) {
+        result = await this.treeService.getTree(id);
+      } else {
+        result = await this.treeService.getTreeByName(treeName);
+      }
+      return new SuccessPipe().Ok(
+              res,
+              CODE.TREE_FETCH_SUCCESS,
+              MSG.TREE_FETCH_SUCCESS,
+              result
+            );
     } catch (err) {
       throw err;
     }
