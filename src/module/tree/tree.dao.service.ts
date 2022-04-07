@@ -43,23 +43,6 @@ export class TreeDaoService {
     }
   }
 
-  async getAllTree(user_id) {
-    try {
-      let result = await this.treeRepository.findAndCountAll({
-        where: {
-          user_id: user_id,
-          deleted_at: null,
-        },
-      });
-      if (!result) {
-        throw new NotFoundException(util.NO_DATA);
-      }
-      return result;
-    } catch (err) {
-      throw new InternalServerErrorException(util.INTERNAL_ERR, err);
-    }
-  }
-
   async getTree(id: number) {
     try {
       let result = this.treeRepository.findOne({

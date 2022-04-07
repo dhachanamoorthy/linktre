@@ -12,6 +12,7 @@ import * as util from "../../constant";
 import * as VError from "verror";
 import { UpdateUserRequestDto } from "./dto/updateUser.request.dto";
 import { Op } from "sequelize/dist";
+import { trees } from "../tree/models";
 @Injectable()
 export class UserDaoService {
   constructor(
@@ -120,6 +121,28 @@ export class UserDaoService {
     } catch (err) {
       Logger.log(err);
       throw new InternalServerErrorException("Internal Server Error");
+    }
+  }
+  async getAllTrees(userId:number){
+    try{
+      let result = await this.userRepository.findAll({
+        include:[
+          {
+            model:trees,
+            attributes:['id','tree_name','created_at','deleted_at'],
+            where:{
+              deleted_at:null
+            }
+          }
+        ],
+        attributes:['id','username'],
+        where:{
+          id:userId
+        }
+      });
+      return result;
+    }catch(err){
+      throw err;
     }
   }
 }

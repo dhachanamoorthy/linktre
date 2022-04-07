@@ -59,22 +59,6 @@ export class TreeController {
     }
   }
 
-  @Get("all/:user_id")
-  @ApiBearerAuth("JWT-auth")
-  @HttpCode(200)
-  @ApiOperation({
-    description: "Api to get all trees",
-  })
-  async getAllTree(@Param("user_id") user_id: number) {
-    try {
-      let result = await this.treeService.getAllTree(user_id);
-      return result;
-    } catch (err) {
-      Logger.error(err);
-      throw err;
-    }
-  }
-
   @Get("/")
   @HttpCode(200)
   @ApiOperation({

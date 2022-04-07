@@ -39,4 +39,8 @@ export class UserService {
     let result = await this.userDaoService.deleteUser(id);
     return result;
   }
+ async getAllTrees(userId:number) {
+    let result = await this.userDaoService.getAllTrees(userId);
+    return result;
+ }
 }

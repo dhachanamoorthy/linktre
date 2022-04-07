@@ -17,12 +17,7 @@ export class TreeService {
     let result = await this.treeDaoService.getTree(id);
     return result;
   }
-
-  async getAllTree(user_id: number) {
-    let result = await this.treeDaoService.getAllTree(user_id);
-    return result;
-  }
-
+  
   async deleteTree(id: number) {
     let result = await this.treeDaoService.deleteTree(id);
     return result;

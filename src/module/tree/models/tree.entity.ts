@@ -1,6 +1,7 @@
 import {
 	AllowNull,
 	AutoIncrement,
+	BelongsTo,
 	Column,
 	DataType,
 	ForeignKey,
@@ -51,4 +52,7 @@ export class trees extends Model<trees> {
 		type: DataType.DATE,
 	})
 	deleted_at: Date;
+
+	@BelongsTo(()=>users)
+	users:users[]
 }
