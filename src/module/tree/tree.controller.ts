@@ -13,7 +13,7 @@ import {
   Query,
   Res,
 } from "@nestjs/common";
-import { ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { SuccessPipe } from "src/pipes/responsePipe";
 import { CODE, MSG } from "./contants";
 import { CreateTreeRequestDto } from "./dto/CreateTreeRequest.dto";
@@ -30,6 +30,7 @@ export class TreeController {
   @ApiOperation({
     description: "Api to create tree",
   })
+  @ApiBearerAuth("JWT-auth")
   async createTree(@Body() payload: CreateTreeRequestDto) {
     try {
       let result = await this.treeService.createTree(payload);
@@ -45,6 +46,7 @@ export class TreeController {
   @ApiOperation({
     description: "Api to update tree",
   })
+  @ApiBearerAuth("JWT-auth")
   async updateTree(
     @Param("id", ParseIntPipe) id: number,
     @Body() payload: UpdateTreeRequestDto
@@ -58,6 +60,7 @@ export class TreeController {
   }
 
   @Get("all/:user_id")
+  @ApiBearerAuth("JWT-auth")
   @HttpCode(200)
   @ApiOperation({
     description: "Api to get all trees",
@@ -77,6 +80,7 @@ export class TreeController {
   @ApiOperation({
     description: "Api to get tree",
   })
+  @ApiBearerAuth("JWT-auth")
   async getTree(
     @Res() res,
     @Query("id") id: number,
@@ -106,6 +110,7 @@ export class TreeController {
   @ApiOperation({
     description: "Api to delete tree",
   })
+  @ApiBearerAuth("JWT-auth")
   async deleteTree(@Param("id", ParseIntPipe) id: number) {
     try {
       let result = await this.treeService.deleteTree(id);
