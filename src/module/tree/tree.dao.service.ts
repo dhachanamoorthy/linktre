@@ -107,7 +107,7 @@ export class TreeDaoService {
 
   async getAllLinks(treeId) {
     try {
-      let result = await this.treeRepository.findAll({
+      let result = await this.treeRepository.findOne({
         include: [
           {
             model: links,

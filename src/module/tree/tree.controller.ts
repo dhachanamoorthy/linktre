@@ -111,7 +111,7 @@ export class TreeController {
   @ApiBearerAuth("JWT-auth")
   async getAlllinks(
     @Res() res,
-    @Query("id") id: number,
+    @Param("id", ParseIntPipe) id: number,
   ) {
     try {
       let result = await this.treeService.getAllLinks(id);

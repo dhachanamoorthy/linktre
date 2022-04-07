@@ -163,7 +163,7 @@ export class UserController {
   @ApiCreatedResponse({
     description: "Trees Fetched Successfully",
   })
-  // @ApiBearerAuth("JWT-auth")
+  @ApiBearerAuth("JWT-auth")
   async getAllTrees(@Res() res, @Param("id", ParseIntPipe) id: number) {
     try {
       let result =await this.userService.getAllTrees(id);

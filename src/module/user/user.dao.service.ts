@@ -125,7 +125,7 @@ export class UserDaoService {
   }
   async getAllTrees(userId:number){
     try{
-      let result = await this.userRepository.findAll({
+      let result = await this.userRepository.findOne({
         include:[
           {
             model:trees,
