@@ -38,6 +38,7 @@ export class UserController {
   @ApiCreatedResponse({
     description: "Registered User Successfully",
   })
+  @ApiBearerAuth("JWT-auth")
   async createUser(
     @Res() res,
     @Body() body: CreateUserRequestDto
@@ -64,6 +65,7 @@ export class UserController {
   @ApiCreatedResponse({
     description: "Fetched Users Successfully",
   })
+  @ApiBearerAuth("JWT-auth")
   async getUser(@Res() res, @Param("id", ParseIntPipe) id: number) {
     try {
       let result = await this.userService.getUser(id);
@@ -112,6 +114,7 @@ export class UserController {
   @ApiCreatedResponse({
     description: "User Updated Successfully",
   })
+  @ApiBearerAuth("JWT-auth")
   async updateUser(
     @Res() res,
     @Param("id", ParseIntPipe) id: number,
@@ -138,6 +141,7 @@ export class UserController {
   @ApiCreatedResponse({
     description: "User Updated Successfully",
   })
+  @ApiBearerAuth("JWT-auth")
   async deleteUser(@Res() res, @Param("id", ParseIntPipe) id: number) {
     try {
       let result = this.userService.deleteUser(id);

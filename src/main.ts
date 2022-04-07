@@ -2,9 +2,10 @@ import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import admin from "firebase-admin";
+import { AuthGuard } from "./module/guard/auth.guard";
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
-
+	app.useGlobalGuards(new AuthGuard());
 	const config = new DocumentBuilder()
 		.setTitle("Linktre")
 		.setDescription("API Documentation")
