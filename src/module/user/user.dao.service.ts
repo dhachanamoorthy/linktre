@@ -36,6 +36,7 @@ export class UserDaoService {
       }
       return result;
     } catch (err) {
+      Logger.log(err);
       throw new InternalServerErrorException("Internal Server Error");
     }
   }
