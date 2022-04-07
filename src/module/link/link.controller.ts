@@ -13,7 +13,7 @@ import {
 import { CreateLinkRequestDto } from "./dto/createLink.request.dto";
 import { LinkService } from "./link.service";
 import * as util from "src/constant";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { UpdateLinkRequestDto } from "./dto/updateLink.request.dto";
 import { SuccessPipe } from "src/pipes/responsePipe";
 import { MSG, CODE } from "./constants";
@@ -26,6 +26,7 @@ export class LinkController {
   @ApiOperation({
     description: "Api to create link",
   })
+  @ApiBearerAuth("JWT-auth")
   async createLink(@Res() res, @Body() payload: CreateLinkRequestDto) {
     try {
       let result = this.linkService.createLink(payload);
@@ -42,6 +43,7 @@ export class LinkController {
     }
   }
   @Get("/:id")
+  @ApiBearerAuth("JWT-auth")
   async getLink(@Res() res, @Param("id") id: number) {
     try {
       let result = await this.linkService.getLink(id);
@@ -57,6 +59,7 @@ export class LinkController {
     }
   }
   @Get("/all/:tree_id")
+  @ApiBearerAuth("JWT-auth")
   async getAllLink(@Res() res, @Param("tree_id") tree_id: number) {
     try {
       let result = await this.linkService.getAllLinks(tree_id);
@@ -77,6 +80,7 @@ export class LinkController {
   }
 
   @Patch("/:id")
+  @ApiBearerAuth("JWT-auth")
   async updateLink(
     @Res() res,
     @Param("id") id: number,
@@ -97,6 +101,7 @@ export class LinkController {
   }
 
   @Delete("/:id")
+  @ApiBearerAuth("JWT-auth")
   async deleteLink(@Res() res, @Param("id") link_id: number) {
     try {
       let result = await this.linkService.deleteLink(link_id);
