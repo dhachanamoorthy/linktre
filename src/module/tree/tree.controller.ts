@@ -103,4 +103,27 @@ export class TreeController {
       throw err;
     }
   }
+  @Get("/:id/links")
+  @HttpCode(200)
+  @ApiOperation({
+    description: "Api to get all links",
+  })
+  @ApiBearerAuth("JWT-auth")
+  async getAlllinks(
+    @Res() res,
+    @Query("id") id: number,
+  ) {
+    try {
+      let result = await this.treeService.getAllLinks(id);
+      return new SuccessPipe().Ok(
+              res,
+              CODE.LINKS_FETCH_SUCCESS,
+              MSG.LINKS_FETCH_SUCCESS,
+              result
+            );
+    } catch (err) {
+      throw err;
+    }
+  }
+
 }
