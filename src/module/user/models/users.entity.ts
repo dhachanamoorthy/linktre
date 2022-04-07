@@ -3,10 +3,12 @@ import {
   AutoIncrement,
   Column,
   DataType,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
 } from "sequelize-typescript";
+import { trees } from "src/module/tree/models";
 
 @Table({
   tableName: "users",
@@ -115,4 +117,7 @@ export class users extends Model<users> {
     type: DataType.DATE,
   })
   deleted_at: Date;
+ 
+  @HasMany(()=>trees)
+  trees:trees[];
 }

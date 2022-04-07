@@ -42,24 +42,7 @@ export class LinkDaoService {
       throw new InternalServerErrorException(util.INTERNAL_ERR);
     }
   }
-  async getAllLinks(tree_id: number) {
-    try {
-      Logger.log("Enter", "getAllLinks");
-      let result = await this.linkRepository.findAll({
-        where: {
-          tree_id: tree_id,
-          deleted_at: null,
-        },
-      });
-      if (!result) {
-        throw new NotFoundException(util.NO_DATA);
-      }
-      return result;
-    } catch (err) {
-      Logger.error(err);
-      throw new InternalServerErrorException(util.INTERNAL_ERR);
-    }
-  }
+
   async updateLink(id: number, payload: any) {
     try {
       console.log(payload);

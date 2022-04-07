@@ -58,26 +58,6 @@ export class LinkController {
       throw err;
     }
   }
-  @Get("/all/:tree_id")
-  @ApiBearerAuth("JWT-auth")
-  async getAllLink(@Res() res, @Param("tree_id") tree_id: number) {
-    try {
-      let result = await this.linkService.getAllLinks(tree_id);
-      if (result) {
-        return new SuccessPipe().Ok(
-          res,
-          CODE.LINK_FETCH_SUCCESS,
-          MSG.LINK_FETCH_SUCCESS,
-          result
-        );
-      } else {
-        return new SuccessPipe().NoContent(res);
-      }
-    } catch (err) {
-      Logger.error(err);
-      throw err;
-    }
-  }
 
   @Patch("/:id")
   @ApiBearerAuth("JWT-auth")
