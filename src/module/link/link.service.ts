@@ -15,11 +15,6 @@ export class LinkService {
     return result;
   }
 
-  async getAllLinks(tree_id: number) {
-    let result = await this.linkDaoService.getAllLinks(tree_id);
-    return result;
-  }
-
   async updateLink(id: number, payload: any) {
     let result = await this.linkDaoService.updateLink(id, payload);
     return result;

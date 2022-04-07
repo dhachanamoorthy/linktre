@@ -18,19 +18,18 @@ export class TreeService {
     return result;
   }
 
-  async getAllTree(user_id: number) {
-    let result = await this.treeDaoService.getAllTree(user_id);
-    return result;
-  }
-
   async deleteTree(id: number) {
     let result = await this.treeDaoService.deleteTree(id);
     return result;
   }
 
-  async getTreeByName(treeName:String){
+  async getTreeByName(treeName: String) {
     treeName = treeName.toLowerCase();
     let result = await this.treeDaoService.getTreeByName(treeName);
     return result;
-  } 
+  }
+  async getAllLinks(treeId: number) {
+    let result = await this.treeDaoService.getAllLinks(treeId);
+    return result;
+  }
 }

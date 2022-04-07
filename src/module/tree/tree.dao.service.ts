@@ -6,6 +6,7 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import * as util from "../../constant";
+import { links } from "../link/models";
 import { trees } from "./models/tree.entity";
 const Sequelize = require("sequelize");
 @Injectable()
@@ -39,23 +40,6 @@ export class TreeDaoService {
       }
     } catch (err) {
       Logger.log(err);
-      throw new InternalServerErrorException(util.INTERNAL_ERR, err);
-    }
-  }
-
-  async getAllTree(user_id) {
-    try {
-      let result = await this.treeRepository.findAndCountAll({
-        where: {
-          user_id: user_id,
-          deleted_at: null,
-        },
-      });
-      if (!result) {
-        throw new NotFoundException(util.NO_DATA);
-      }
-      return result;
-    } catch (err) {
       throw new InternalServerErrorException(util.INTERNAL_ERR, err);
     }
   }
@@ -118,6 +102,30 @@ export class TreeDaoService {
       return result;
     } catch (err) {
       throw new InternalServerErrorException(err);
+    }
+  }
+
+  async getAllLinks(treeId) {
+    try {
+      let result = await this.treeRepository.findOne({
+        include: [
+          {
+            model: links,
+            attributes: ["id", "link_name", "link_url", "disabled"],
+            where: {
+              deleted_at: null,
+            },
+          },
+        ],
+        attributes: ["id", "tree_name"],
+        where: {
+          id: treeId,
+          deleted_at: null,
+        },
+      });
+      return result;
+    } catch (err) {
+      throw err;
     }
   }
 }

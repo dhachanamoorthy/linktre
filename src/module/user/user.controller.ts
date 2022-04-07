@@ -155,4 +155,26 @@ export class UserController {
       throw err;
     }
   }
+  @Get("/:id/trees")
+  @HttpCode(200)
+  @ApiOperation({
+    description: "Api to get all trees associated with user",
+  })
+  @ApiCreatedResponse({
+    description: "Trees Fetched Successfully",
+  })
+  @ApiBearerAuth("JWT-auth")
+  async getAllTrees(@Res() res, @Param("id", ParseIntPipe) id: number) {
+    try {
+      let result =await this.userService.getAllTrees(id);
+      return new SuccessPipe().Ok(
+        res,
+        CODE.GET_ALL_ASSOC_TREES,
+        MSG.GET_ALL_ASSOC_TREES,
+        result
+      );
+    } catch (err) {
+      throw err;
+    }
+  }
 }
