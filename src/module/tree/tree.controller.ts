@@ -15,6 +15,7 @@ import {
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from "@nestjs/swagger";
 import { SuccessPipe } from "src/pipes/responsePipe";
+import { Public } from "../guard/decorators/public.decorator";
 import { CODE, MSG } from "./contants";
 import { CreateTreeRequestDto } from "./dto/CreateTreeRequest.dto";
 import { UpdateTreeRequestDto } from "./dto/UpdateTreeRequest.dto";
@@ -64,7 +65,8 @@ export class TreeController {
   @ApiOperation({
     description: "Api to get tree",
   })
-  @ApiBearerAuth("JWT-auth")
+  @Public()
+  // @ApiBearerAuth("JWT-auth")
   async getTree(
     @Res() res,
     @Query("id") id: number,

@@ -1,11 +1,14 @@
 import {
 	CanActivate,
 	ExecutionContext,
+	Injectable,
 	Logger,
 	UnauthorizedException,
 } from "@nestjs/common";
 import { Observable } from "rxjs";
 import admin from "firebase-admin";
+import { Reflector } from "@nestjs/core";
+import { IS_PUBLIC } from "./decorators/public.decorator";
 
 export class AuthGuard implements CanActivate {
 	private readonly logger = new Logger(AuthGuard.name);
@@ -13,6 +16,9 @@ export class AuthGuard implements CanActivate {
 		context: ExecutionContext
 	): boolean | Promise<boolean> | Observable<boolean> {
 		const token = context.getArgs()[0]?.headers?.authorization?.split(" ")[1];
+		if(context.getHandler().name === 'getTree'){
+			return true;
+		}
 		if (token?.length > 0) {
 			const checkRevoked = true;
 			const isValid = admin
